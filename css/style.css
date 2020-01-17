@@ -1,0 +1,67 @@
+
+.al_center{text-align: center; display: block;}
+.font-green{color: #044927 !important; font-weight: bold;}
+.lado{ display: flex; justify-content: center; }
+.logo-fametro{
+    max-width: 40%;
+    height: auto;
+}
+.mascote{
+    max-width: 17%;
+    padding: 15px;
+}
+.d-n{display: none;}
+.required:after { content:" *";  color: red; }
+.trigger{
+    position: relative;
+    width: 100%;
+    padding: 15px;
+    background: #333;
+    font-size: 1em;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 15px;
+    margin-top: 1rem;
+}
+.trigger_error{background-color: #F45563;}
+.workcontrol_upload{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    vertical-align: middle;
+    display: none;
+}
+.workcontrol_upload_bar{
+    display: block;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+    margin-top: 18rem;
+    display: none;
+}
+
+.workcontrol_upload_bar p{
+    display: block;
+    margin: 0;
+    font-size: 0.8em;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0px #555;
+}
+.form-check-label {margin-bottom: 8px;}
+.form-check-input{display: none;}
+.icon-salvar{position: relative;right:  35px;top: -16px;}
+.active{color: #fff;background: #28a745;width: 45%;height: auto;border-radius: .2rem;}
+.fas{ font-size: 5rem;}
+.fa-paper-plane, .fa-id-badge, .fa-calendar-alt, .fa-book, .fa-comment-dots, .fa-times, .fa-check{font-size: 1rem;}
+.form-text{font-size: 14px; position: relative; right:5px; font-family: 'arial';}
+.fa-wifi{position: relative;left: 10px;top: 7px;}
+.fa-envelope-open-text:before{position: relative;top: 4px;left: 17px;}
+.fa-user-graduate:before{position: relative;left: 25px;top: 5px;}
+.form-row{padding: 20px 0 5px 0;}
+.msg, .check {color:#d81515;;font-size: 15px;}

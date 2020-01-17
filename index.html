@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+      <div class="workcontrol_upload">
+        <div class="workcontrol_upload_bar">
+            <img src="img/load_w.gif" alt="Processando requisição!" title="Processando requisição!"/>
+            <p>Processando requisição.</p>
+        </div>
+      </div>
+      <div class="container mt-3">
+        <div class="row margin">
+          <div class="lado">
+              <img src="img/logo-unifametro-01.png" class="logo-fametro">
+              <img src="img/Wallye-210.png" class="mascote">
+          </div>
+        </div>
+        <hr>
+        <h1 class="al_center font-green mb-3">Como podemos ajudar?</h1>
+        <p class="trigger trigger_error al_center d-n" id="error"></p>
+        <form method="post" id="formm">
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="cpf" class="required">CPF</label>
+              <input type="text" name="cpf" id="cpf" class="form-control" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="aluno" class="required">Nome completo</label>
+                <input type="text" name="aluno" id="aluno" class="form-control" disabled>
+              </div>
+              <div class="col-md-6">
+                <label for="curso" class="required">Curso</label>
+                <input type="text" name="curso" id="curso" class="form-control" disabled>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="email" class="required">Email</label>
+                <input type="text" name="email" id="email" class="form-control" disabled>
+              </div>
+              <div class="col-md-6">
+                <label for="dtnascimento" class="required">Data de Nascimento</label>
+                <input type="text" name="dtnascimento" id="dtnascimento" class="form-control" disabled>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="telefone" class="required">Telefone</label>
+                <input type="text" name="telefone" id="telefone" class="form-control" disabled>
+              </div>
+              <div class="col-md-6">
+                <label for="ra" class="required">Matrícula</label>
+                <input type="text" name="ra" id="ra" class="form-control" disabled>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md-8 mt-3">
+                  <label class="required">Clique no(s) serviço(s) que você não tem acesso:</label>
+              </div>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-4 mb-3">
+                  <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="1"  id="checkWifi" name="checkWifi">
+                      <label class="form-check-label" for="checkWifi"><i class="fas fa-wifi" for="checkWifi"></i></label>
+                      <small id="emailHelp" class="form-text">Problema no Wifi?</small>
+                  </div>
+              </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="2" id="checkEmail" name="checkEmail">
+                    <label class="form-check-label" for="checkEmail"><i class="fas fa-envelope-open-text"></i></label>
+                    <small id="emailHelp" class="form-text">Problema no Email?</small>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="3" id="checkPortal" name="checkPortal">
+                    <label class="form-check-label" for="checkPortal"><i class="fas fa-user-graduate"></i></label>
+                    <small id="emailHelp" class="form-text">Problema no Portal?</small> 
+                </div>
+            </div>
+            <span class="col-md-4" style="color:red" id="erroChecked"></span>
+          </div>
+          <div class="row mb-3">
+              <div class="col-md-8">
+                <label for="observacoes" class="required">Observações</label>
+                <textarea class="form-control success" id="observacoes" name="observacoes" rows="4" placeholder="Descreva a sua necessidade e informe os seus dados acadêmicos."></textarea>
+              </div>
+          </div>
+          <div class="row mb-3 form-row-teste">
+            <div class="col-md-6">
+                <label for="inputState" class="required">Seu contato para retorno</label>
+                <select id="selectContato" name="selectContato" class="form-control success" onchange="toggleUser(this.value)">
+                    <option selected disabled value="">Informe seu contato</option>
+                    <option value="optionWT" name="optionWT">Whatsapp / Telefone</option>
+                    <option value="optionEmail" name="optionEmail" id="optionEmail">Email</option>
+                </select>
+            </div>
+            <div class="form-row-teste col-md-6 mb-3" id="inputs">
+                
+            </div>
+            <span class="col-md-4" style="color:red" id="erroContato"></span>
+          </div>
+          <button type="submit" class="btn btn-primary">Enviar</button>
+
+        </form>
+      </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
