@@ -28,11 +28,14 @@
         <hr>
         <h1 class="al_center font-green mb-3">Como podemos ajudar?</h1>
         <p class="trigger trigger_error al_center d-n" id="error"></p>
-        <form method="post" id="formm">
+        <form method="post" id="formAluno" class="needs-validation" novalidate>
           <div class="row mb-3">
             <div class="col-md-12">
-              <label for="cpf" class="required">CPF</label>
-              <input type="text" name="cpf" id="cpf" class="form-control" required>
+              <div class="form-row-teste">
+                <label for="cpf" class="required">CPF</label>
+                <input type="text" name="cpf" id="cpf" class="form-control success" required>
+                <input type="hidden" name="ALUNO_ID" id="ALUNO_ID">
+              </div>
             </div>
           </div>
           <div class="row mb-3">
@@ -96,17 +99,19 @@
           </div>
           <div class="row mb-3">
               <div class="col-md-8">
-                <label for="observacoes" class="required">Observações</label>
-                <textarea class="form-control success" id="observacoes" name="observacoes" rows="4" placeholder="Descreva a sua necessidade e informe os seus dados acadêmicos."></textarea>
+                <div class="form-row-teste">
+                  <label for="observacoes" class="required">Observações</label>
+                  <textarea class="form-control success" id="observacoes" name="observacoes" rows="4" placeholder="Descreva a sua necessidade e informe os seus dados acadêmicos."></textarea>
+                </div>
               </div>
           </div>
-          <div class="row mb-3 form-row-teste">
+          <div class="row mb-3">
             <div class="col-md-6">
                 <label for="inputState" class="required">Seu contato para retorno</label>
                 <select id="selectContato" name="selectContato" class="form-control success" onchange="toggleUser(this.value)">
                     <option selected disabled value="">Informe seu contato</option>
-                    <option value="optionWT" name="optionWT">Whatsapp / Telefone</option>
-                    <option value="optionEmail" name="optionEmail" id="optionEmail">Email</option>
+                    <option value="1" name="optionWT">Whatsapp / Telefone</option>
+                    <option value="2" name="optionEmail" id="optionEmail">Email</option>
                 </select>
             </div>
             <div class="form-row-teste col-md-6 mb-3" id="inputs">
@@ -117,11 +122,34 @@
           <button type="submit" class="btn btn-primary">Enviar</button>
 
         </form>
+      </div>       
+      <!-- INICIO MODAL DE SUCESSO -->
+      <div class="modal fade" id="ignismyModal" role="dialog">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                   </div>
+                  <div class="modal-body">
+          <div class="thank-you-pop">
+            <img src="http://goactionstations.co.uk/wp-content/uploads/2017/03/Green-Round-Tick.png" alt="">
+            <h2>Dados Enviados com sucesso!</h2>
+            <p>Em breve entraremos em contato</p>
+           </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button class="btn btn-success btn-block" id="modal-redirect">OK</button>
+                  </div>
+              </div>
+          </div>
       </div>
+      <!-- FINAL MODAL DE SUCESSO -->
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/jquery.mask.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>
