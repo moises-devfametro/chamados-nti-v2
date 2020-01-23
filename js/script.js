@@ -57,7 +57,7 @@ $.validator.setDefaults({
         }
 
         $.ajax({
-            url: 'http://localhost:8085/api/v1/solicitacao/criar',
+            url: 'http://localhost:8085/api/v1/chamado/criar',
             type: 'POST',
             data: {
                 "ALUNO_ID": $('#ALUNO_ID').val(),
