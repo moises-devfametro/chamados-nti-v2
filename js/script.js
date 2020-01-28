@@ -1,4 +1,3 @@
-
 cpf.addEventListener("blur", function( event ) {
     $('.trigger').hide();
     document.getElementById("error").innerText = "";
@@ -36,6 +35,11 @@ cpf.addEventListener("blur", function( event ) {
     });
 }, true);
 
+function validateEmail(Email) {
+    var pattern = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    return $.trim(Email).match(pattern) ? true : false;
+}
+
 $.validator.setDefaults({
     submitHandler: function(){
         var form = $("#formAluno");
@@ -55,39 +59,65 @@ $.validator.setDefaults({
                 }
             }
         }
-
-        $.ajax({
-            url: 'http://localhost:8085/api/v1/chamado/criar',
-            type: 'POST',
-            data: {
-                "ALUNO_ID": $('#ALUNO_ID').val(),
-                "EMAIL": $('#email').val(),
-                "ALUNO": $('#aluno').val(),
-                "OPCAO_WIFI": servicoAluno1,
-                "OPCAO_EMAIL": servicoAluno2,
-                "OPCAO_PORTAL": servicoAluno3,
-                "OBSERVACAO": $('#observacoes').val().trim(),
-                "OPCAOCONTATO_ID": $('#selectContato').val(),
-                "CONTATO": $('input[name="contato"]').val().trim().replace(/[\])}[{(-]/g, ''),
-            },
-            dataType: 'json',
-            success: function(data) {
-                $(this).fadeOut('slow', function(){
-                    $('#spinner').hide();
+        if($('.form-check-input:checked').length > 0){
+            document.getElementById('erroChecked').remove();
+            if(!validateEmail($('#email'))){
+                $.ajax({
+                    url: 'http://localhost:8085/api/v1/chamado/criar',
+                    type: 'POST',
+                    data: {
+                        "ALUNO_ID": $('#ALUNO_ID').val(),
+                        "EMAIL": $('#email').val(),
+                        "ALUNO": $('#aluno').val(),
+                        "OPCAO_WIFI": servicoAluno1,
+                        "OPCAO_EMAIL": servicoAluno2,
+                        "OPCAO_PORTAL": servicoAluno3,
+                        "OBSERVACAO": $('#observacoes').val().trim(),
+                        "OPCAOCONTATO_ID": $('#selectContato').val(),
+                        "CONTATO": $('input[name="contato"]').val().trim().replace(/[\])}[{(-]/g, ''),
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        $(this).fadeOut('slow', function(){
+                            $('#spinner').hide();
+                        });
+                        if(data.id){
+                            $(":input").val("");
+                            $('.form-check-input').prop("checked", false);
+                            $('#ignismyModal').modal({
+                                backdrop: 'static',
+                                keyboard: true, 
+                                show: true
+                            });
+                            $("#modal-redirect").click(function(){
+                                window.location.href = 'http://portal.fametro.com.br:8080/web/app/edu/PortalEducacional/login/';
+                            });
+                        }
+                    }
                 });
-                if(data.id){
-                    $('#ignismyModal').modal({
-                        backdrop: 'static',
-                        keyboard: true, 
-                        show: true
-                    });
-                    $("#modal-redirect").click(function(){
-                        window.location.href = 'http://portal.fametro.com.br:8080/web/app/edu/PortalEducacional/login/';
-                    });
-                }
             }
-        });
+            else{
+                document.getElementById('erroContato').innerHTML = 'Email inválido';
+                return false;
+            }
+        }
+        else{
+            document.getElementById('erroChecked').innerHTML = 'Marque o serviço que você não tem acesso';
+            return false;
+        }
+
     }
+});
+$(document)
+  .ajaxStart(function () {
+    $('#spinner').show();
+  })
+  .ajaxStop(function () {
+    $('#spinner').hide();
+  });
+
+$(document).ready(function(){
+    $('#spinner').hide();
 });
 $('#formAluno').validate({
     rules:{
