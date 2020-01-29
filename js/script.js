@@ -35,15 +35,23 @@ cpf.addEventListener("blur", function( event ) {
     });
 }, true);
 
-function validateEmail(Email) {
-    var pattern = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-    return $.trim(Email).match(pattern) ? true : false;
-}
 
 $.validator.setDefaults({
     submitHandler: function(){
         var form = $("#formAluno");
         var servicoAluno = document.getElementsByClassName('form-check-input');
+
+        let contato;
+        let type;
+
+        if($('select[name="selectContato"]').find('option:selected').val() == '1'){
+            contato = document.getElementById('telefone').value;
+            type = 'telefone';
+        }
+        else{
+            contato = document.getElementById('email').value;
+            type = 'endereço';
+        }
 
         for (var i = 0; i < servicoAluno.length; i++){
             if ( servicoAluno[i].checked ) {
@@ -59,9 +67,9 @@ $.validator.setDefaults({
                 }
             }
         }
+
         if($('.form-check-input:checked').length > 0){
             document.getElementById('erroChecked').remove();
-            if(!validateEmail($('#email'))){
                 $.ajax({
                     url: 'http://localhost:8085/api/v1/chamado/criar',
                     type: 'POST',
@@ -74,7 +82,7 @@ $.validator.setDefaults({
                         "OPCAO_PORTAL": servicoAluno3,
                         "OBSERVACAO": $('#observacoes').val().trim(),
                         "OPCAOCONTATO_ID": $('#selectContato').val(),
-                        "CONTATO": $('input[name="contato"]').val().trim().replace(/[\])}[{(-]/g, ''),
+                        "CONTATO": contato,
                     },
                     dataType: 'json',
                     success: function(data) {
@@ -89,17 +97,13 @@ $.validator.setDefaults({
                                 keyboard: true, 
                                 show: true
                             });
+                            document.getElementById("contato-aluno").innerHTML = `Os dados de acesso serão enviados para o ${type} <b>${contato}</b>. Em caso de alteração, procure o atendimento ao aluno.`;                
                             $("#modal-redirect").click(function(){
                                 window.location.href = 'http://portal.fametro.com.br:8080/web/app/edu/PortalEducacional/login/';
                             });
                         }
                     }
                 });
-            }
-            else{
-                document.getElementById('erroContato').innerHTML = 'Email inválido';
-                return false;
-            }
         }
         else{
             document.getElementById('erroChecked').innerHTML = 'Marque o serviço que você não tem acesso';
@@ -119,6 +123,7 @@ $(document)
 $(document).ready(function(){
     $('#spinner').hide();
 });
+
 $('#formAluno').validate({
     rules:{
         cpf:{
@@ -186,15 +191,43 @@ $('.form-check :checkbox').on("change", function(){
     $(this).parent().toggleClass("active");
     $(".check").remove();
 });
+
+
 $('select[name="selectContato"]').on('change', function() {
+document.getElementById('c').innerHTML = '';
+
     if($(this).find('option:selected').val() == '1'){
-        addFields("text", "(00)90000-0000", "WTaluno");
+        tel = $('#telefone').val();
+        addFields("text", "(00)90000-0000", "WTaluno", tel);
+
+        $('input[name="contato"]').blur(function(){
+            if($(this).val() != tel){
+                document.getElementById('c').innerHTML = `O Telefone informado não coincide com o telefone cadastrado. Confirma o telefone informado <b> ${$('input[name="contato"]').val()} </b>?`;
+            }
+            else{
+                document.getElementById('c').innerHTML = '';
+            }
+        });
     }
     else{
-        addFields("email", "Email", "email");
+        email = $('#email').val();
+        addFields("text", "Email", "email", email);
+
+        $('input[name="contato"]').blur(function(){
+            if($(this).val() != email){
+                document.getElementById('c').innerHTML = `O Email informado não coincide com o email cadastrado. Confirma o email informado <b> ${$('input[name="contato"]').val()} </b>?`;
+            }
+            else{
+                document.getElementById('c').innerHTML = '';
+            }
+        });
     }
+
 });
-function addFields(type, place, id){
+
+
+
+function addFields(type, place, id, value){
     var container = document.getElementById("inputs");
     while (container.hasChildNodes()) {
         container.removeChild(container.lastChild);
@@ -205,10 +238,13 @@ function addFields(type, place, id){
     input.type = type;
     input.name = "contato";
     input.id = id;
-    input.className = "form-control success";
+    input.value = value;
+    input.className = "form-control contato";
     input.placeholder = place; 
     input.required = true;
     input.style.top = "32px";
     input.style.position = "relative";
     container.appendChild(input);
 }
+
+

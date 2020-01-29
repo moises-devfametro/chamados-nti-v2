@@ -24,6 +24,7 @@
     margin-top: 1rem;
 }
 .trigger_error{background-color: #F45563;}
+.trigger_warning{background-color: #FAAD50;}
 .workcontrol_upload{
     position: fixed;
     left: 0;
