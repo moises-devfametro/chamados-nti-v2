@@ -121,6 +121,11 @@
 	display:block;
 	margin-bottom:25px;
 }
+.warning{
+    width: 5em;
+    margin: 0rem 10px 10px 11rem;
+    display: block;
+}
 
 .thank-you-pop h1{
 	font-size: 42px;

@@ -35,10 +35,9 @@ cpf.addEventListener("blur", function( event ) {
     });
 }, true);
 
+$('#send-solicitacao, #send-solicitacao-confirm').click(function (e){
+    e.preventDefault();
 
-$.validator.setDefaults({
-    submitHandler: function(){
-        var form = $("#formAluno");
         var servicoAluno = document.getElementsByClassName('form-check-input');
 
         let contato;
@@ -69,49 +68,64 @@ $.validator.setDefaults({
         }
 
         if($('.form-check-input:checked').length > 0){
-            document.getElementById('erroChecked').remove();
-                $.ajax({
-                    url: 'http://localhost:8085/api/v1/chamado/criar',
-                    type: 'POST',
-                    data: {
-                        "ALUNO_ID": $('#ALUNO_ID').val(),
-                        "EMAIL": $('#email').val(),
-                        "ALUNO": $('#aluno').val(),
-                        "OPCAO_WIFI": servicoAluno1,
-                        "OPCAO_EMAIL": servicoAluno2,
-                        "OPCAO_PORTAL": servicoAluno3,
-                        "OBSERVACAO": $('#observacoes').val().trim(),
-                        "OPCAOCONTATO_ID": $('#selectContato').val(),
-                        "CONTATO": contato,
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        $(this).fadeOut('slow', function(){
-                            $('#spinner').hide();
-                        });
-                        if(data.id){
-                            $(":input").val("");
-                            $('.form-check-input').prop("checked", false);
-                            $('#ignismyModal').modal({
-                                backdrop: 'static',
-                                keyboard: true, 
-                                show: true
-                            });
-                            document.getElementById("contato-aluno").innerHTML = `Os dados de acesso serão enviados para o ${type} <b>${contato}</b>. Em caso de alteração, procure o atendimento ao aluno.`;                
-                            $("#modal-redirect").click(function(){
-                                window.location.href = 'http://portal.fametro.com.br:8080/web/app/edu/PortalEducacional/login/';
-                            });
-                        }
-                    }
+            if($('input[name="contato"]').val() == contato){
+                ajax();
+            }
+            else{
+                $('#modal-contato-diferente').modal({
+                    show: true
                 });
+                document.getElementById("tipo-contato").innerHTML = `O ${type} informado não coincide com o ${type} cadastrado no sistema. Confirma o ${type}?`;
+                document.getElementById("contato-escolhido").innerHTML = $('input[name="contato"]').val();
+                $('#send-solicitacao-confirm').click(function (){
+                    $('#modal-contato-diferente').modal('hide');
+                    ajax();
+                });
+            }
+
         }
         else{
             document.getElementById('erroChecked').innerHTML = 'Marque o serviço que você não tem acesso';
             return false;
         }
-
-    }
+        function ajax(){
+            $.ajax({
+                url: 'http://localhost:8085/api/v1/chamado/criar',
+                type: 'POST',
+                data: {
+                    "ALUNO_ID": $('#ALUNO_ID').val(),
+                    "EMAIL": $('#email').val(),
+                    "ALUNO": $('#aluno').val(),
+                    "OPCAO_WIFI": servicoAluno1,
+                    "OPCAO_EMAIL": servicoAluno2,
+                    "OPCAO_PORTAL": servicoAluno3,
+                    "OBSERVACAO": $('#observacoes').val().trim(),
+                    "OPCAOCONTATO_ID": $('#selectContato').val(),
+                    "CONTATO": contato,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $(this).fadeOut('slow', function(){
+                        $('#spinner').hide();
+                    });
+                    if(data.id){
+                        $(":input").val("");
+                        $('.form-check-input').prop("checked", false);
+                        $('#ignismyModal').modal({
+                            backdrop: 'static',
+                            keyboard: true, 
+                            show: true
+                        });
+                        $("#modal-redirect").click(function(){
+                            window.location.href = 'http://portal.fametro.com.br:8080/web/app/edu/PortalEducacional/login/';
+                        });
+                    }
+                }
+            });
+        }
 });
+
+
 $(document)
   .ajaxStart(function () {
     $('#spinner').show();
@@ -194,37 +208,17 @@ $('.form-check :checkbox').on("change", function(){
 
 
 $('select[name="selectContato"]').on('change', function() {
-document.getElementById('c').innerHTML = '';
 
     if($(this).find('option:selected').val() == '1'){
         tel = $('#telefone').val();
         addFields("text", "(00)90000-0000", "WTaluno", tel);
-
-        $('input[name="contato"]').blur(function(){
-            if($(this).val() != tel){
-                document.getElementById('c').innerHTML = `O Telefone informado não coincide com o telefone cadastrado. Confirma o telefone informado <b> ${$('input[name="contato"]').val()} </b>?`;
-            }
-            else{
-                document.getElementById('c').innerHTML = '';
-            }
-        });
     }
     else{
         email = $('#email').val();
         addFields("text", "Email", "email", email);
-
-        $('input[name="contato"]').blur(function(){
-            if($(this).val() != email){
-                document.getElementById('c').innerHTML = `O Email informado não coincide com o email cadastrado. Confirma o email informado <b> ${$('input[name="contato"]').val()} </b>?`;
-            }
-            else{
-                document.getElementById('c').innerHTML = '';
-            }
-        });
     }
 
 });
-
 
 
 function addFields(type, place, id, value){
